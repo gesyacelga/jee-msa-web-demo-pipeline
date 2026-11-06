@@ -108,7 +108,7 @@ stages:
   # ==========================================
   - stage: Approval
     displayName: 'Aprobar'
-    dependsOn: CI
+    dependsOn: CodeReview
     condition: succeeded()
     jobs:
       - job: manual_gate
