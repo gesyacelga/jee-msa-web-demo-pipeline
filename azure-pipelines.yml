@@ -84,9 +84,27 @@ stages:
               summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/build/reports/jacoco/test/jacocoTestReport.xml'
               pathToSources: '$(System.DefaultWorkingDirectory)/src/main/java'
             displayName: 'Publicar Cobertura en Azure DevOps'
+ 
+  # ==========================================
+  # STAGE 2: Code Review
+  # ==========================================
+  - stage: Approval
+    displayName: 'Aprobar'
+    dependsOn: CI
+    condition: succeeded()
+    jobs:
+      - job: manual_gate
+        displayName: 'Esperando aprobación'
+        pool: server
+        steps:
+          - task: ManualValidation@0
+            inputs:
+              notifyUsers: 'jefersonvillacis@hotmail.com'
+              instructions: 'Revision de codigo.'
+              onTimeout: 'reject'
 
   # ==========================================
-  # STAGE 2: APROBACIÓN MANUAL (APPROVAL)
+  # STAGE 3: APROBACIÓN MANUAL (APPROVAL)
   # ==========================================
   - stage: Approval
     displayName: 'Aprobar'
@@ -104,7 +122,7 @@ stages:
               onTimeout: 'reject'
 
   # ==========================================
-  # STAGE 3: DESPLIEGUE CONTINUO (CD)
+  # STAGE 4: DESPLIEGUE CONTINUO (CD)
   # ==========================================
   - stage: CD
     displayName: 'CD'
@@ -146,7 +164,7 @@ stages:
             displayName: 'Descarga CLI, Login y Despliegue Docker'
 
   # ==========================================
-  # STAGE 4: NOTIFICACIONES (NOTIFICATIONS)
+  # STAGE 5: NOTIFICACIONES (NOTIFICATIONS)
   # ==========================================
   - stage: Notifications
     displayName: 'Notificar'
