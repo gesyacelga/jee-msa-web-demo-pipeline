@@ -88,8 +88,8 @@ stages:
   # ==========================================
   # STAGE 2: Code Review
   # ==========================================
-  - stage: Approval
-    displayName: 'Aprobar'
+  - stage: CodeReview
+    displayName: 'Revision de codigo'
     dependsOn: CI
     condition: succeeded()
     jobs:
